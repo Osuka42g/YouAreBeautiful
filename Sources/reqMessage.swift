@@ -38,6 +38,10 @@ class reqMessage {
       }
   }
 
+  func attachment_url() -> String {
+    return message_sender_attachment
+}
+
   func type() -> message_types {
     return message_type
   }

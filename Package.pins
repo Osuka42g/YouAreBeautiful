@@ -8,6 +8,12 @@
       "version": "0.2.3"
     },
     {
+      "package": "Cgd",
+      "reason": null,
+      "repositoryURL": "https://github.com/twostraws/Cgd.git",
+      "version": "0.1.0"
+    },
+    {
       "package": "HeliumLogger",
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/HeliumLogger.git",
@@ -60,6 +66,12 @@
       "reason": null,
       "repositoryURL": "https://github.com/IBM-Swift/SwiftyJSON.git",
       "version": "16.0.0"
+    },
+    {
+      "package": "swiftgd",
+      "reason": null,
+      "repositoryURL": "https://github.com/twostraws/SwiftGD.git",
+      "version": "1.0.0"
     }
   ],
   "version": 1

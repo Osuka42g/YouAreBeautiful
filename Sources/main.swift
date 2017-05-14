@@ -23,6 +23,8 @@ router.get("/request") { request, response, _ in
     }
 }
 
+router.all("/static", middleware: StaticFileServer(path: "./static"))
+
 router.post("/request") { request, response, next in
     guard let parsedBody = request.body else {
         next()
@@ -35,6 +37,7 @@ router.post("/request") { request, response, next in
               let messageData = reqMessage(jsonBody)
               let cg = config()
               let mm = messagesManager()
+              let vh = visionHandler()
 
               switch(messageData.type()) {
                 case .text:
@@ -42,7 +45,9 @@ router.post("/request") { request, response, next in
 
                 case .attachment:
                   let resText = "Eh, buenaza imagen."
-                    mm.sendMessage(resMessage(messageData.sender_id(), resText))
+                  mm.sendMessage(resMessage(messageData.sender_id(), resText))
+                  vh.testImage(image_url: messageData.attachment_url())
+
 
                 case .callback: break
 

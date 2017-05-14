@@ -1,15 +1,32 @@
 import Foundation
 
 class config {
-  public var facebook_messenger_endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token="
+  public var facebook_messenger_endpoint = ""
   public var facebook_access_token = ""
+
+
+  public var google_vision_endpoint = ""
+  public var google_project_id = ""
+  public var google_apikey = ""
+  public var google_project_number = ""
+
+    public var cloudinary_upload_endpoint = ""
+    public var cloudinary_apikey = ""
 
   init() {
 
   }
 
   func facebook_endpoint() -> String {
-      return "\(facebook_messenger_endpoint)\(facebook_access_token)"
+      return facebook_messenger_endpoint + facebook_access_token
   }
+
+  func google_endpoint() -> String {
+      return google_vision_endpoint + google_apikey
+  }
+
+    func cloudinary_endopoint() -> String {
+        return cloudinary_upload_endpoint
+    }
 
 }
