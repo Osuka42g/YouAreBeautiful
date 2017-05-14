@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-class resMessage {
+public class resMessage {
   public var message = ""
   public var recipient = ""
   public enum type {

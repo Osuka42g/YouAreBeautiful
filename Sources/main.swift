@@ -34,12 +34,21 @@ router.post("/request") { request, response, next in
               print(jsonBody)
               let messageData = reqMessage(jsonBody)
               let cg = config()
-              let message = resMessage(messageData.sender_id(), messageData.sender_message(true))
+              let mm = messagesManager()
 
-              KituraRequest.request(.post,
-                      cg.facebook_endpoint(),
-                      parameters: message.out(),
-                      encoding: JSONEncoding.default)
+              switch(messageData.type()) {
+                case .text:
+                  mm.sendMessage(resMessage(messageData.sender_id(), messageData.sender_message(true)))
+
+                case .attachment:
+                  let resText = "Eh, buenaza imagen."
+                    mm.sendMessage(resMessage(messageData.sender_id(), resText))
+
+                case .callback: break
+
+                default:
+                  print("Message error")
+              }
 
               try response.send("{\"result\": \"ok\"}").end()
       default:

@@ -2,14 +2,28 @@ import Foundation
 import SwiftyJSON
 
 class reqMessage {
+
+  public enum message_types {
+    case text
+    case attachment
+    case callback
+  }
+
   public var message_sender_id = ""
   public var message_sender_text = ""
   public var message_sender_attachment = ""
+  public var message_type = message_types.text
 
 	init(_ jsonData: JSON) {
     message_sender_id = jsonData["entry"][0]["messaging"][0]["sender"]["id"].string!
-    message_sender_text = jsonData["entry"][0]["messaging"][0]["message"]["text"].string ?? ""
-    message_sender_attachment = jsonData["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["url"].string ?? ""
+    if let mst = jsonData["entry"][0]["messaging"][0]["message"]["text"].string {
+      message_sender_text = mst
+      message_type = .text
+    }
+    if let msa = jsonData["entry"][0]["messaging"][0]["message"]["attachments"][0]["payload"]["url"].string {
+      message_sender_attachment = msa
+      message_type = .attachment
+    }
 	}
 
   func sender_id() -> String {
@@ -22,6 +36,10 @@ class reqMessage {
       } else {
           return message_sender_text
       }
+  }
+
+  func type() -> message_types {
+    return message_type
   }
 
   func health() -> String {
