@@ -1,0 +1,15 @@
+import Foundation
+
+class config {
+  public var facebook_messenger_endpoint = "https://graph.facebook.com/v2.6/me/messages?access_token="
+  public var facebook_access_token = ""
+
+  init() {
+
+  }
+
+  func facebook_endpoint() -> String {
+      return "\(facebook_messenger_endpoint)\(facebook_access_token)"
+  }
+
+}
