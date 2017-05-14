@@ -3,13 +3,10 @@ import HeliumLogger
 import SwiftyJSON
 import KituraRequest
 
-// Initialize HeliumLogger
 HeliumLogger.use()
 
-// Create a new router
 let router = Router()
 
-// Handle HTTP GET requests to /
 router.get("/") {
     request, response, next in
     response.send("Hello, World!")
@@ -34,13 +31,16 @@ router.post("/request") { request, response, next in
 
     switch(parsedBody) {
       case .json(let jsonBody):
+              print(jsonBody)
               let messageData = reqMessage(jsonBody)
               let cg = config()
-              let message = [ "message": ["text": messageData.sender_message()], "recipient": ["id": messageData.sender_id()] ]
+              let message = resMessage(messageData.sender_id(), messageData.sender_message(true))
+
               KituraRequest.request(.post,
                       cg.facebook_endpoint(),
-                      parameters: message,
+                      parameters: message.out(),
                       encoding: JSONEncoding.default)
+
               try response.send("{\"result\": \"ok\"}").end()
       default:
           break
@@ -48,10 +48,5 @@ router.post("/request") { request, response, next in
     next()
 }
 
-
-
-// Add an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: 8080, with: router)
-
-// Start the Kitura runloop (this call never returns)
 Kitura.run()
