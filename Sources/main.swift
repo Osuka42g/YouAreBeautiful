@@ -14,6 +14,11 @@ router.get("/") {
     next()
 }
 
+router.get("/request") { request, response, _ in
+    let challenge = request.queryParameters["hub.challenge"] ?? ""
+    try response.send("\(challenge)").end()
+}
+
 // Add an HTTP server and connect it to the router
 Kitura.addHTTPServer(onPort: 8080, with: router)
 
