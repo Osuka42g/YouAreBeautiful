@@ -50,9 +50,8 @@ router.post("/request") { request, response, next in
 
 
                 case .callback: break
-
-                default:
-                  print("Message error")
+                case .other: break
+                
               }
 
               try response.send("{\"result\": \"ok\"}").end()

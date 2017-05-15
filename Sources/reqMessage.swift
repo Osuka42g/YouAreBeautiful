@@ -7,12 +7,13 @@ class reqMessage {
     case text
     case attachment
     case callback
+    case other
   }
 
   public var message_sender_id = ""
   public var message_sender_text = ""
   public var message_sender_attachment = ""
-  public var message_type = message_types.text
+  public var message_type = message_types.other
 
 	init(_ jsonData: JSON) {
     message_sender_id = jsonData["entry"][0]["messaging"][0]["sender"]["id"].string!
