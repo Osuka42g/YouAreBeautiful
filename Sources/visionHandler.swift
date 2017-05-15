@@ -9,6 +9,7 @@ import Foundation
 class visionHandler {
 
     let cg = config()
+    let mm = messagesManager()
     
     public func testImage(image_url: String) {
 
@@ -41,15 +42,18 @@ class visionHandler {
                       encoding: JSONEncoding.default).response {
                         request, response, data, error in
                         let jsonData = JSON(data: data!)
-                        print(jsonData)
+                        self.handleVisionResponse(jsonData)
             }
     
 
     }
 
     
-    public func handleVisionResponse(_ response: AnyObject) {
-        print(response)
+    public func handleVisionResponse(_ visionResponse: JSON) {
+        print(visionResponse)
+        
+//        let safeSearchResults = visionResponse["responses"][0]["safeSearchAnnotation"].string!
+        
     }
     
     public func setRequest(_ image64data: String) -> [String: Any] {

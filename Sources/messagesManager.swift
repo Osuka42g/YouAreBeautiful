@@ -11,7 +11,9 @@ public class messagesManager {
     KituraRequest.request(.post,
       cg.facebook_endpoint(),
       parameters: message.out(),
-      encoding: JSONEncoding.default)
+      encoding: JSONEncoding.default).response {
+        request, response, data, error in
+    }
   }
 
 }
