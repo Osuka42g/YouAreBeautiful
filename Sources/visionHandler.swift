@@ -10,9 +10,12 @@ class visionHandler {
 
     let cg = config()
     let mm = messagesManager()
+    var send_to = ""
     
-    public func testImage(image_url: String) {
+    public func testImage(image_url: String, respond_to: String?) {
 
+        if (respond_to != nil) { send_to = respond_to! }
+        
         let url = URL(string: image_url)!
         let session = URLSession.shared
         let request = URLRequest(url: url)
@@ -49,11 +52,37 @@ class visionHandler {
     }
 
     
-    public func handleVisionResponse(_ visionResponse: JSON) {
-        print(visionResponse)
+    public func handleVisionResponse(_ response: JSON) {
+        print(response)
+        var responseError: String?
+        let successMessage = "Aww yeah! You are ready to rock!"
         
-//        let safeSearchResults = visionResponse["responses"][0]["safeSearchAnnotation"].string!
+        let hResponse = visionResponse(response)
         
+        let safeSearchResults = response["responses"][0]["safeSearchAnnotation"]
+        for safeResult in safeSearchResults {
+//            mm.sendMessage(resMessage(send_to, "Result \(safeResult.0) = \(safeResult.1.string!)"))
+            
+            switch safeResult.1.string! {
+                case "POSSIBLE", "LIKELY", "VERY_LIKELY":
+                    responseError = "Hey! This picture is a bit out of context... You might not want to send this 😨"
+                break;
+                default:
+                
+                break;
+            }
+        }
+        
+        if responseError == nil && hResponse.countWebDetectionResults() > 25 {
+            responseError = "Why don't you try with something less popular 😉"
+        }
+        
+        
+        if (responseError != nil) {
+            mm.sendMessage(resMessage(send_to, responseError!))
+        } else {
+            mm.sendMessage(resMessage(send_to, successMessage))
+        }
     }
     
     public func setRequest(_ image64data: String) -> [String: Any] {

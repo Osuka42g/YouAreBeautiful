@@ -6,6 +6,9 @@ import KituraRequest
 HeliumLogger.use()
 
 let router = Router()
+let cg = config()
+let mm = messagesManager()
+let vh = visionHandler()
 
 router.get("/") {
     request, response, next in
@@ -35,22 +38,23 @@ router.post("/request") { request, response, next in
       case .json(let jsonBody):
               print(jsonBody)
               let messageData = reqMessage(jsonBody)
-              let cg = config()
-              let mm = messagesManager()
-              let vh = visionHandler()
 
               switch(messageData.type()) {
                 case .text:
-                  mm.sendMessage(resMessage(messageData.sender_id(), messageData.sender_message(true)))
+                    let mes = "Send your image! 📸"
+//                    mm.sendMessage(resMessage(messageData.sender_id(), messageData.sender_message(showInvalids: true)))
+                    mm.sendMessage(resMessage(messageData.sender_id(), mes))
 
                 case .attachment:
                   let resText = "Eh, buenaza imagen."
-                  mm.sendMessage(resMessage(messageData.sender_id(), resText))
-                  vh.testImage(image_url: messageData.attachment_url())
+                  mm.sendMessage(resMessage(messageData.sender_id(), resText, ofType: .typing))
+                  vh.testImage(image_url: messageData.attachment_url(), respond_to: messageData.sender_id())
 
 
                 case .callback: break
-                case .other: break
+                case .other:
+                    print("It's a \"kind of message and I don't know what to do\"")
+                break
                 
               }
 
