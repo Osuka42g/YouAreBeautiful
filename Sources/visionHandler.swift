@@ -61,7 +61,7 @@ class visionHandler {
         
         let safeSearchResults = response["responses"][0]["safeSearchAnnotation"]
         for safeResult in safeSearchResults {
-//            mm.sendMessage(resMessage(send_to, "Result \(safeResult.0) = \(safeResult.1.string!)"))
+            mm.sendMessage(resMessage(send_to, "Result \(safeResult.0) = \(safeResult.1.string!)"))
             
             switch safeResult.1.string! {
                 case "POSSIBLE", "LIKELY", "VERY_LIKELY":
@@ -73,7 +73,7 @@ class visionHandler {
             }
         }
         
-        if responseError == nil && hResponse.countWebDetectionResults() > 25 {
+        if responseError == nil && hResponse.countWebDetectionResults() > 40 {
             responseError = "Why don't you try with something less popular 😉"
         }
         

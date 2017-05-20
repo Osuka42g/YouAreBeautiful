@@ -12,13 +12,14 @@ let vh = visionHandler()
 
 router.get("/") {
     request, response, next in
-    response.send("Hello, World!")
+    response.send("You are beautiful :)")
     next()
 }
 
 router.all("/request", middleware: BodyParser())
 
 router.get("/request") { request, response, _ in
+    // Facebook authorization
     if let challenge = request.queryParameters["hub.challenge"] {
       try response.send("\(challenge)").end()
     } else {
@@ -26,8 +27,7 @@ router.get("/request") { request, response, _ in
     }
 }
 
-router.all("/static", middleware: StaticFileServer(path: "./static"))
-
+// Our main method to get messages.
 router.post("/request") { request, response, next in
     guard let parsedBody = request.body else {
         next()
@@ -36,29 +36,29 @@ router.post("/request") { request, response, next in
 
     switch(parsedBody) {
       case .json(let jsonBody):
-              print(jsonBody)
-              let messageData = reqMessage(jsonBody)
+        print(jsonBody)
+        let messageData = reqMessage(jsonBody)
 
-              switch(messageData.type()) {
-                case .text:
-                    let mes = "Send your image! 📸"
+          switch(messageData.type()) {
+            case .text:
+                let mes = "Send your image! 📸"
 //                    mm.sendMessage(resMessage(messageData.sender_id(), messageData.sender_message(showInvalids: true)))
-                    mm.sendMessage(resMessage(messageData.sender_id(), mes))
+                mm.sendMessage(resMessage(messageData.sender_id(), mes))
 
-                case .attachment:
-                  let resText = "Eh, buenaza imagen."
-                  mm.sendMessage(resMessage(messageData.sender_id(), resText, ofType: .typing))
-                  vh.testImage(image_url: messageData.attachment_url(), respond_to: messageData.sender_id())
+            case .attachment:
+                let resText = "Eh, buenaza imagen."
+                mm.sendMessage(resMessage(messageData.sender_id(), resText, ofType: .typing))
+                vh.testImage(image_url: messageData.attachment_url()!, respond_to: messageData.sender_id())
 
 
-                case .callback: break
-                case .other:
-                    print("It's a \"kind of message and I don't know what to do\"")
-                break
-                
-              }
+            case .callback: break
+            case .other:
+                print("Got a kind of \"weird\" message and I don't know what to do")
+            break
+            
+          }
 
-              try response.send("{\"result\": \"ok\"}").end()
+          try response.send("{\"result\": \"ok\"}").end()
       default:
           break
     }

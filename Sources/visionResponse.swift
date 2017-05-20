@@ -27,7 +27,6 @@ public class visionResponse {
         
         for label in webDetection! {
             count += label.1.count
-//            print(label)
         }
         return count
     }
