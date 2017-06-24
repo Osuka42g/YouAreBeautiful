@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-class personUser {
+class userProfile {
     
     public var user_id = ""
     public var user_current_status = ""

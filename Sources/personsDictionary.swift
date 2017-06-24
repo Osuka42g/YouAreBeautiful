@@ -2,13 +2,13 @@ import Foundation
 import SwiftyJSON
 
 class personsDictionary {
-  public var users = [personUser]()
+  public var users = [userProfile]()
 
 	init() {
 
 	}
 
-  func append(_ user: personUser) {
+  func append(_ user: userProfile) {
     users.append(user)
   }
 

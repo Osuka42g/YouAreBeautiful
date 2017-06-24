@@ -9,6 +9,7 @@ let router = Router()
 let cg = config()
 let mm = messagesManager()
 let vh = visionHandler()
+let um = usersManager()
 
 router.get("/") {
     request, response, next in
@@ -33,6 +34,8 @@ router.post("/request") { request, response, next in
         next()
         return
     }
+    
+    um.save();
 
     switch(parsedBody) {
       case .json(let jsonBody):
