@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-public class resMessage {
+public class messageConstructor {
     public var message: String?
     public var recipient: String?
     public var type = message_types.standard
@@ -37,6 +37,7 @@ public class resMessage {
         }
     }
     
+    // Defines if a message has all the fields required to be sent.
     public func isSendable() -> Bool {
         switch type {
         case .standard:

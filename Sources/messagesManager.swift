@@ -5,7 +5,7 @@ import KituraRequest
 
 public class messagesManager {
 
-  public func sendMessage(_ message: resMessage) {
+  public func sendMessage(_ message: messageConstructor) {
     let cg = config()
 
     KituraRequest.request(.post,

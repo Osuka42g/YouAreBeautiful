@@ -35,22 +35,22 @@ router.post("/request") { request, response, next in
         return
     }
     
-    um.save();
+//    um.save();
 
     switch(parsedBody) {
       case .json(let jsonBody):
         print(jsonBody)
-        let messageData = reqMessage(jsonBody)
+        let messageData = messageReceived(jsonBody)
 
           switch(messageData.type()) {
             case .text:
                 let mes = "Send your image! 📸"
 //                    mm.sendMessage(resMessage(messageData.sender_id(), messageData.sender_message(showInvalids: true)))
-                mm.sendMessage(resMessage(messageData.sender_id(), mes))
+                mm.sendMessage(messageConstructor(messageData.sender_id(), mes))
 
             case .attachment:
                 let resText = "Eh, buenaza imagen."
-                mm.sendMessage(resMessage(messageData.sender_id(), resText, ofType: .typing))
+                mm.sendMessage(messageConstructor(messageData.sender_id(), resText, ofType: .typing))
                 vh.testImage(image_url: messageData.attachment_url()!, respond_to: messageData.sender_id())
 
 
@@ -63,6 +63,7 @@ router.post("/request") { request, response, next in
 
           try response.send("{\"result\": \"ok\"}").end()
       default:
+            print("Got a something we cannot handle")
           break
     }
     next()

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftyJSON
 
-class reqMessage {
+public class messageReceived {
 
     public enum message_types {
         case text

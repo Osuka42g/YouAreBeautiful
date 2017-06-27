@@ -16,6 +16,7 @@ class visionHandler {
 
         if (respond_to != nil) { send_to = respond_to! }
         
+        // We download the image and convert it to base64
         let url = URL(string: image_url)!
         let session = URLSession.shared
         let request = URLRequest(url: url)
@@ -47,8 +48,6 @@ class visionHandler {
                         let jsonData = JSON(data: data!)
                         self.handleVisionResponse(jsonData)
             }
-    
-
     }
 
     
@@ -61,7 +60,7 @@ class visionHandler {
         
         let safeSearchResults = response["responses"][0]["safeSearchAnnotation"]
         for safeResult in safeSearchResults {
-            mm.sendMessage(resMessage(send_to, "Result \(safeResult.0) = \(safeResult.1.string!)"))
+            mm.sendMessage(messageConstructor(send_to, "Result \(safeResult.0) = \(safeResult.1.string!)"))
             
             switch safeResult.1.string! {
                 case "POSSIBLE", "LIKELY", "VERY_LIKELY":
@@ -79,9 +78,9 @@ class visionHandler {
         
         
         if (responseError != nil) {
-            mm.sendMessage(resMessage(send_to, responseError!))
+            mm.sendMessage(messageConstructor(send_to, responseError!))
         } else {
-            mm.sendMessage(resMessage(send_to, successMessage))
+            mm.sendMessage(messageConstructor(send_to, successMessage))
         }
     }
     
